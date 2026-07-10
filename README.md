@@ -1,3 +1,11 @@
+```
+           ____
+ _ __ ___ |___ \__   _____  ___
+| '_ ` _ \  __) \ \ / / _ \/ __|
+| | | | | |/ __/ \ V /  __/ (__
+|_| |_| |_|_____| \_/ \___|\___|
+```
+
 # m2vec — write Vectrex games in Modula-2
 
 **m2vec** compiles [Modula-2](https://en.wikipedia.org/wiki/Modula-2) directly to
