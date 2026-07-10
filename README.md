@@ -16,6 +16,41 @@ records, real procedures, typed arrays and modules on a 1982 vector console.
 
 ---
 
+## Why m2vec?
+
+The Vectrex already has three good C compilers (cmoc, vbcc, gcc6809). Here is
+what m2vec offers over them:
+
+- **A safer, more structured language.** Modula-2 gives you strong static
+  typing, real enumerations, records and typed arrays, and a genuine module
+  system (`IMPORT` / `DEFINITION MODULE`) instead of `#include` and the C
+  preprocessor. The compiler catches mistakes C would wave through.
+- **Zero-dependency, one-command toolchain.** `.mod → .bin` in a single step —
+  no separate assembler, no linker, no Makefile, no build system. m2vec has a
+  **built-in 6809 assembler** (with optimal branch relaxation), so the whole
+  toolchain is one self-contained binary. The C compilers all need an external
+  assembler/linker set up around them.
+- **Vectrex support out of the box.** The BIOS is exposed as clean, typed,
+  importable modules (`VectrexGraphics` / `VectrexInput` / `VectrexAudio` /
+  `VectrexText`) instead of raw magic addresses — and adding a new BIOS call is
+  **one annotated line** in a `.def` file, no compiler change needed. The output
+  is a ready-to-run cartridge ROM, header and all.
+- **Fast code — it beats the native C compiler.** On a standard 6809 kernel
+  benchmark m2vec is faster than **cmoc** (the other compiler that targets the
+  6809 directly) on 10 of 11 kernels and ties the 11th; one kernel (`statem`) is
+  the fastest across all four compilers. It is roughly even with vbcc.
+- **Transparent.** It writes the generated assembly next to every ROM, so you
+  can always see exactly what it produced.
+
+**Being honest about the trade-offs:** m2vec is a young compiler. gcc6809 still
+wins most kernels on raw speed, m2vec's ROMs are currently larger than all three
+C compilers', and the language is a practical subset (no heap, floating point or
+file I/O — see [The language at a glance](#the-language-at-a-glance)). If you
+want a safe, modular language and a single zero-dependency binary — with speed at
+or above cmoc's — m2vec is for you.
+
+---
+
 ## Requirements
 
 | | |
