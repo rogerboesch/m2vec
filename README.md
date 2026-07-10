@@ -20,7 +20,7 @@ records, real procedures, typed arrays and modules on a 1982 vector console.
 
 | | |
 |---|---|
-| **OS** | macOS on Apple Silicon (the bundled `m2vec` binary is `arm64`). |
+| **OS** | macOS on Apple Silicon (the bundled `m2vec` binary is `arm64`). **Windows and Linux builds coming soon.** |
 | **Anything else** | **Nothing.** m2vec has a built-in 6809 assembler — it produces the `.bin` ROM on its own, with no external assembler or toolchain. |
 | **To run the ROM** | any Vectrex emulator (e.g. [ParaJVE](http://vide.malban.de/), VecX) or real hardware. |
 
