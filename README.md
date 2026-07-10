@@ -9,10 +9,10 @@ no assembly, no build system.
 ./m2vec examples/pong.mod -o pong.bin      # a playable Pong ROM
 ```
 
-It targets the Vectrex's Motorola 6809 directly and produces tight code (on the
-standard 6809 kernel benchmark it is faster than cmoc on every test). The point,
-though, is the language: Modula-2 gives you records, real procedures, typed
-arrays and modules on a 1982 vector console.
+It targets the Vectrex's Motorola 6809 directly and produces tight code — on a
+standard 6809 kernel benchmark it matches or beats the mature cmoc C compiler on
+every test for speed. The point, though, is the language: Modula-2 gives you
+records, real procedures, typed arrays and modules on a 1982 vector console.
 
 ---
 
