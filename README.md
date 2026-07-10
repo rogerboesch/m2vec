@@ -20,24 +20,42 @@ records, real procedures, typed arrays and modules on a 1982 vector console.
 
 | | |
 |---|---|
-| **OS** | macOS on Apple Silicon (the bundled `m2vec` binary is `arm64`). **Windows and Linux builds coming soon.** |
+| **OS** | A prebuilt binary is bundled for **macOS (Apple Silicon)**, **Linux (x86_64, arm64)** and **Windows (x86_64)**. |
 | **Anything else** | **Nothing.** m2vec has a built-in 6809 assembler — it produces the `.bin` ROM on its own, with no external assembler or toolchain. |
 | **To run the ROM** | any Vectrex emulator (e.g. [ParaJVE](http://vide.malban.de/), VecX) or real hardware. |
 
 ## Install
 
-Clone the repo — the `m2vec` binary sits at the root, ready to run:
+The repo ships a ready-to-run binary for each platform — pick yours:
+
+| Platform | Binary |
+|---|---|
+| macOS (Apple Silicon) | `m2vec-macos` |
+| Linux x86_64 | `m2vec-linux-x86_64` |
+| Linux arm64 | `m2vec-linux-arm64` |
+| Windows x86_64 | `m2vec-windows.exe` |
+
+Clone the repo, then rename your platform's binary to `m2vec` so the commands
+below work as written:
 
 ```sh
 git clone https://github.com/rogerboesch/m2vec.git
 cd m2vec
+mv m2vec-macos m2vec            # or m2vec-linux-x86_64, m2vec-linux-arm64
+chmod +x m2vec                 # macOS/Linux only
 ./m2vec examples/pong.mod -o pong.bin
 ```
 
+On Windows, use the binary directly:
+
+```bat
+m2vec-windows.exe examples\pong.mod -o pong.bin
+```
+
 That's it — `pong.bin` is a complete Vectrex ROM. Optionally put the binary on
-your `PATH` (`cp m2vec /usr/local/bin/`) so you can run `m2vec` from any project
-directory. When you do, keep a `lib/` folder next to your `.mod` files (or set
-`M2VEC_LIB`) so the `Vectrex*` modules are found.
+your `PATH` so you can run `m2vec` from any project directory. When you do, keep
+a `lib/` folder next to your `.mod` files (or set `M2VEC_LIB`) so the `Vectrex*`
+modules are found.
 
 ## Compiling
 
