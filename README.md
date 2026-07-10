@@ -21,16 +21,8 @@ records, real procedures, typed arrays and modules on a 1982 vector console.
 | | |
 |---|---|
 | **OS** | macOS on Apple Silicon (the bundled `m2vec` binary is `arm64`). |
-| **Assembler** | [`lwasm`](http://www.lwtools.ca/) (LWTOOLS). m2vec emits 6809 assembly and calls `lwasm` to turn it into the ROM. |
+| **Anything else** | **Nothing.** m2vec has a built-in 6809 assembler — it produces the `.bin` ROM on its own, with no external assembler or toolchain. |
 | **To run the ROM** | any Vectrex emulator (e.g. [ParaJVE](http://vide.malban.de/), VecX) or real hardware. |
-
-Point m2vec at your `lwasm` with the `LWASM` environment variable:
-
-```sh
-export LWASM=/path/to/lwasm         # e.g. /usr/local/bin/lwasm
-```
-
-(If unset, m2vec looks for `~/retro-tools/vectrec/lwasm`.)
 
 ## Install
 
@@ -39,13 +31,13 @@ Clone the repo — the `m2vec` binary sits at the root, ready to run:
 ```sh
 git clone https://github.com/rogerboesch/m2vec.git
 cd m2vec
-export LWASM=/path/to/lwasm
 ./m2vec examples/pong.mod -o pong.bin
 ```
 
-Optionally put it on your `PATH` (`cp m2vec /usr/local/bin/`) so you can run
-`m2vec` from any project directory. When you do, keep a `lib/` folder next to
-your `.mod` files (or set `M2VEC_LIB`) so the `Vectrex*` modules are found.
+That's it — `pong.bin` is a complete Vectrex ROM. Optionally put the binary on
+your `PATH` (`cp m2vec /usr/local/bin/`) so you can run `m2vec` from any project
+directory. When you do, keep a `lib/` folder next to your `.mod` files (or set
+`M2VEC_LIB`) so the `Vectrex*` modules are found.
 
 ## Compiling
 
@@ -59,8 +51,8 @@ m2vec <file.mod> [-o <out.bin>]
 - Resolves imported library modules (`VectrexGraphics`, …) from `lib/` next to
   your source, or from `$M2VEC_LIB`.
 
-Run the ROM in your emulator. With the `vec2x` runner from LWTOOLS/vectrec, for
-example:
+Run the ROM in your Vectrex emulator. With a command-line runner such as
+`vec2x`, for example:
 
 ```sh
 vec2x right romfast.bin pong.bin empty.png
