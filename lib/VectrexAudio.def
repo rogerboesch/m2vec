@@ -1,0 +1,21 @@
+DEFINITION MODULE VectrexAudio;
+
+(* Vectrex sound BIOS interface for m2vec. See VectrexGraphics.def for the full
+   (*$ CALL/STORE ... REG(...) *) annotation grammar. All routines here are
+   void; sound data lives in ROM as CONST byte arrays. *)
+
+  (* Silence all sound channels. *)
+  PROCEDURE ClearSound;                        (*$ CALL $F272 *)
+
+  (* Copy the pending sound-register buffer to the PSG. Call once per frame. *)
+  PROCEDURE DoSound;                           (*$ CALL $F289 *)
+
+  (* Start playing a ROM music table (Vec_Music format), pointer in U. *)
+  PROCEDURE InitMusic(data: ARRAY OF CHAR);    (*$ CALL $F68D REG(@U) *)
+
+  (* Load a list of (register, value) pairs into the sound shadow RAM; pointer
+     in U, terminated by a register byte with bit 7 set ($80/$FF). Do_Sound then
+     copies the shadow to the PSG each frame, so call DoSound every frame too. *)
+  PROCEDURE SoundBytes(data: ARRAY OF CHAR);   (*$ CALL $F27D REG(@U) *)
+
+END VectrexAudio.

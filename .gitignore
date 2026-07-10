@@ -1,0 +1,4 @@
+# generated when you compile an example
+*.bin
+*.asm
+*.lst

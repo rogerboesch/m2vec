@@ -1,0 +1,16 @@
+DEFINITION MODULE VectrexText;
+
+(* Vectrex text BIOS interface for m2vec. See VectrexGraphics.def for the full
+   annotation grammar. Print_Str_d draws a $80-terminated string; the character
+   cell size comes from the TextHeight/TextWidth RAM variables, which the fast
+   BIOS cold start leaves at 0 (invisible), so set them before printing. *)
+
+  (* Print a $80-terminated string at relative position (y, x). *)
+  PROCEDURE PrintStr(y, x: INTEGER; s: ARRAY OF CHAR);
+                                               (*$ CALL $F37A REG(A, B, @U) *)
+
+  (* Character cell size (signed). Typical readable values: height -8, width 80. *)
+  VAR TextHeight: INTEGER;                     (*$ VAR $C82A BYTE *)
+  VAR TextWidth: INTEGER;                      (*$ VAR $C82B BYTE *)
+
+END VectrexText.

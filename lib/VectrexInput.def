@@ -1,0 +1,35 @@
+DEFINITION MODULE VectrexInput;
+
+(* Vectrex controller BIOS interface for m2vec. See VectrexGraphics.def for the
+   full annotation grammar. A value-returning routine adds a RET(reg) clause
+   naming the register its result comes back in (A or B); such a routine can be
+   used in expression position, e.g.  buttons := ReadButtons. *)
+
+  (* Read the joystick buttons and return the current pressed-button mask in A.
+     Bit set = pressed: stick1 = bits 0..3, stick2 = bits 4..7. *)
+  PROCEDURE ReadButtons(): INTEGER;            (*$ CALL $F1BA RET(A) *)
+
+  (* Read the buttons through a mask (in A) and return the result in A. *)
+  PROCEDURE ReadButtonsMask(mask: INTEGER): INTEGER;
+                                               (*$ CALL $F1B4 REG(A) RET(A) *)
+
+  (* Sample the enabled joystick axes digitally into the RAM variables below.
+     Only axes whose mux-enable flag is non-zero are read, so set those first. *)
+  PROCEDURE JoyDigital;                        (*$ CALL $F1F8 *)
+
+  (* --- joystick axes (BIOS RAM, signed bytes: -1 = left/down, +1 = right/up) *)
+  (* These are read-only results filled in by JoyDigital. Bound as signed bytes
+     so a comparison against 0 gives the correct direction. *)
+  VAR Joy1X: INTEGER;                          (*$ VAR $C81B BYTE *)
+  VAR Joy1Y: INTEGER;                          (*$ VAR $C81C BYTE *)
+  VAR Joy2X: INTEGER;                          (*$ VAR $C81D BYTE *)
+  VAR Joy2Y: INTEGER;                          (*$ VAR $C81E BYTE *)
+
+  (* --- mux enable flags: write a non-zero channel selector to turn an axis on
+     before calling JoyDigital (1=stick1 X, 3=stick1 Y, 5=stick2 X, 7=stick2 Y). *)
+  VAR JoyEnable1X: INTEGER;                     (*$ VAR $C81F UBYTE *)
+  VAR JoyEnable1Y: INTEGER;                     (*$ VAR $C820 UBYTE *)
+  VAR JoyEnable2X: INTEGER;                     (*$ VAR $C821 UBYTE *)
+  VAR JoyEnable2Y: INTEGER;                     (*$ VAR $C822 UBYTE *)
+
+END VectrexInput.

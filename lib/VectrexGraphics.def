@@ -1,0 +1,57 @@
+DEFINITION MODULE VectrexGraphics;
+
+(* ==========================================================================
+   Vectrex vector-graphics BIOS interface for m2vec.
+
+   Every procedure is a thin binding to a Vectrex BIOS ROM routine (or, for
+   SetScale, a direct hardware-register write). The binding is a machine-
+   readable annotation in a (*$ ... *) pragma right after the signature; m2vec
+   reads it to generate the call. Adding a call is ONE line here -- no compiler
+   change.
+
+   Annotation grammar
+   ------------------
+     (*$ CALL  <addr> [REG(<slots>)] *)   emit  JSR <addr>   (a normal BIOS call)
+     (*$ STORE <addr>  REG(<slot>)   *)   emit  STA <addr>   (inline hw write)
+
+     <addr>   a 16-bit ROM/hardware address, e.g. $F312.
+     <slots>  how the parameters (in declaration order) reach the routine:
+                A      value of the argument in register A
+                B      value of the argument in register B
+                @X     ADDRESS of the argument in register X (arrays / VAR)
+                @U     ADDRESS of the argument in register U
+
+   CALL routines are entered with DP=$D0 and U preserved; STORE uses extended
+   addressing. All references to these low addresses assemble as extended.
+   ========================================================================== *)
+
+  (* Recalibrate the beam and wait for the next frame. Call once per frame. *)
+  PROCEDURE WaitRecal;                        (*$ CALL $F192 *)
+
+  (* Reset the beam to the screen origin (0,0). *)
+  PROCEDURE ZeroBeam;                         (*$ CALL $F354 *)
+
+  (* Set the vector beam intensity, 0..$7F. *)
+  PROCEDURE IntensityA(i: INTEGER);           (*$ CALL $F2AB REG(A) *)
+
+  (* Set the beam scale factor (object size), 0..$7F. Direct VIA write. *)
+  PROCEDURE SetScale(s: INTEGER);             (*$ STORE $D004 REG(A) *)
+
+  (* Move the beam (pen up) to a relative position; y then x. *)
+  PROCEDURE MovetoD(y, x: INTEGER);           (*$ CALL $F312 REG(A, B) *)
+
+  (* Draw one line (pen down) by a relative delta; y then x. *)
+  PROCEDURE DrawLineD(y, x: INTEGER);         (*$ CALL $F3DF REG(A, B) *)
+
+  (* Draw a ROM vector list: a count byte then count+1 signed (y,x) pairs. *)
+  PROCEDURE DrawVLc(list: ARRAY OF CHAR);     (*$ CALL $F3CE REG(@X) *)
+
+  (* --- adding more ------------------------------------------------------
+     One line with an address and register mapping, e.g. the BIOS string
+     printer (pointer in U, y in A, x in B):
+
+       PROCEDURE PrintStr(s: ARRAY OF CHAR; y, x: INTEGER);
+                                               (*$ CALL $F37A REG(@U, A, B) *)
+     --------------------------------------------------------------------- *)
+
+END VectrexGraphics.
