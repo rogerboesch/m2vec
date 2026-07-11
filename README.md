@@ -65,7 +65,7 @@ or above cmoc's — m2vec is for you.
 |---|---|
 | **OS** | A prebuilt binary is bundled for **macOS (Apple Silicon)**, **Linux (x86_64, arm64)** and **Windows (x86_64)**. |
 | **Anything else** | **Nothing.** m2vec has a built-in 6809 assembler — it produces the `.bin` ROM on its own, with no external assembler or toolchain. |
-| **To run the ROM** | any Vectrex emulator (e.g. [ParaJVE](http://vide.malban.de/), VecX) or real hardware. |
+| **To run the ROM** | the bundled **vec9** emulator (macOS, Apple Silicon — see [Run it](#run-it--vec9-emulator)), any other Vectrex emulator, or real hardware. Running needs a Vectrex BIOS ROM you supply. |
 
 ## Install
 
@@ -112,12 +112,38 @@ m2vec <file.mod> [-o <out.bin>]
 - Resolves imported library modules (`VectrexGraphics`, …) from `lib/` next to
   your source, or from `$M2VEC_LIB`.
 
-Run the ROM in your Vectrex emulator. With a command-line runner such as
-`vec2x`, for example:
+Then run it — the repo bundles **vec9**, a Vectrex emulator, so you can play
+what you compile with no extra setup.
+
+---
+
+## Run it — vec9 emulator
+
+`vec9-macos` (macOS, Apple Silicon) is a bundled Vectrex emulator: a real MC6809
+core with the vector display, a phosphor/glow beam look, and sound. Point it at a
+Vectrex BIOS ROM and your compiled `.bin`:
 
 ```sh
-vec2x right romfast.bin pong.bin empty.png
+chmod +x vec9-macos            # first time only
+./vec9-macos path/to/bios.rom pong.bin
 ```
+
+> **You supply the BIOS.** The Vectrex BIOS ROM is copyrighted and is *not*
+> included — use your own dump (commonly named `romfast.bin`). With no cartridge
+> argument, vec9 just boots the BIOS.
+
+**Controls**
+
+| Keys | Action |
+|---|---|
+| Arrow keys | Joystick 1 (up / down / left / right) |
+| A / S / D / F | Buttons 1–4 |
+| F1–F6 | Toggle beam effects (phosphor, glow, DAC quantize, flicker, length-dim, vignette) |
+| F9 / F10 | Beam-load profiler — reset / snapshot report |
+
+A telemetry panel on the right shows beam load, vectors per frame, a load
+sparkline, the input state and frame timing. Other Vectrex emulators work too —
+vec9 is just the one that ships in the box.
 
 ---
 
